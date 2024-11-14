@@ -1,0 +1,58 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "type": "shell",
+      "command": "clang",
+      "args": [
+        "${file}",
+        "-o",
+        "${fileDirname}/${fileBasenameNoExtension}",
+        "-std=c11"
+      ],
+      "group": "build",
+      "problemMatcher": ["$gcc"],
+      "detail": "C 파일 컴파일"
+    },
+    {
+      "label": "run",
+      "type": "shell",
+      "dependsOn": "build",
+      "command": "${fileDirname}/${fileBasenameNoExtension}",
+      // "args": ["<", "input.txt"], // 여기를 주석처리하면 input.txt를 사용하지 않음
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "type": "cppbuild",
+      "label": "C/C++: clang 활성 파일 빌드",
+      "command": "/usr/bin/clang",
+      "args": [
+        "-fcolor-diagnostics",
+        "-fansi-escape-codes",
+        "-g",
+        "${file}",
+        "-o",
+        "${fileDirname}/${fileBasenameNoExtension}"
+      ],
+      "options": {
+        "cwd": "${fileDirname}"
+      },
+      "problemMatcher": ["$gcc"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "detail": "디버거에서 생성된 작업입니다."
+    }
+  ]
+}

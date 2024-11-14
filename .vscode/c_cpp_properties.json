@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "name": "Mac",
+      "includePath": ["${workspaceFolder}/**"],
+      "defines": [],
+      "macFrameworkPath": ["/System/Library/Frameworks", "/Library/Frameworks"],
+      "compilerPath": "/usr/bin/clang", // C 컴파일러로 변경
+      "cStandard": "c11", // C11 표준으로 설정
+      "intelliSenseMode": "clang-x64"
+    }
+  ],
+  "version": 4
+}

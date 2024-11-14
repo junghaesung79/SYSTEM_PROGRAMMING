@@ -1,0 +1,22 @@
+{
+  "files.associations": {
+    "stdio.h": "c",
+    "stdlib.h": "c",
+    "string.h": "c",
+    "math.h": "c",
+    "stat.h": "c",
+    "unistd.h": "c",
+    "errno.h": "c",
+    "utils.h": "c",
+    "constants.h": "c",
+    "__locale": "c",
+    "time.h": "c",
+    "shell.h": "c"
+  },
+  "editor.formatOnSave": true,
+  "C_Cpp.clang_format_fallbackStyle": "Google",
+  "C_Cpp.clang_format_style": "{ BasedOnStyle: Google, IndentWidth: 4, AllowShortFunctionsOnASingleLine: false, ColumnLimit: 0, BraceWrapping: { AfterClass: false, AfterControlStatement: false, AfterEnum: false, AfterFunction: false, AfterNamespace: false, AfterStruct: false, BeforeCatch: false, BeforeElse: false, IndentBraces: false } }",
+  "[c]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools"
+  }
+}

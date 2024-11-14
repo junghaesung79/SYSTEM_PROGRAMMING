@@ -1,0 +1,7 @@
+[
+  {
+    "key": "cmd+;",
+    "command": "workbench.action.tasks.runTask",
+    "args": "run"
+  }
+]
