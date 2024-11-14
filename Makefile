@@ -1,7 +1,8 @@
-CC = gcc
+CC = clang
 CFLAGS = -Wall -I./include
 TARGET = myshell
-SRCS = $(wildcard src/*.c)
+
+SRCS = $(wildcard src/*.c) $(wildcard src/commands/*.c)
 OBJS = $(SRCS:.c=.o)
 
 $(TARGET): $(OBJS)

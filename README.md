@@ -6,7 +6,9 @@
 ## 빌드 방법
 
 ```bash
+make clean
 make
+./myshell
 ```
 
 ## 평가

@@ -1,0 +1,16 @@
+# 실행 파일
+myshell
+
+# Object 파일들
+*.o
+
+# 임시 파일들
+*~
+.DS_Store
+
+# 디렉토리
+/tmp/
+
+# IDE 관련 파일/디렉토리
+.vscode/
+.idea/
