@@ -2,6 +2,6 @@
   {
     "key": "cmd+;",
     "command": "workbench.action.tasks.runTask",
-    "args": "run"
+    "args": "clean-build-run"
   }
 ]

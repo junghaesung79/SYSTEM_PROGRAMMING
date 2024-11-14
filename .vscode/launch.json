@@ -2,17 +2,17 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "(lldb) Launch",
+      "name": "(lldb) Launch Shell",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/${fileBasenameNoExtension}",
-      "args": ["<", "input.txt"],  // 입력 파일을 사용하도록 설정
+      "program": "${workspaceFolder}/myshell", // 실행 파일 경로 수정
+      "args": [], // 셸 프로그램이므로 입력 리다이렉션 제거
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],
       "externalConsole": true,
       "MIMode": "lldb",
-      "miDebuggerPath": "/usr/bin/lldb",  // lldb 경로
+      "miDebuggerPath": "/usr/bin/lldb",
       "setupCommands": [
         {
           "description": "Enable pretty-printing for lldb",
@@ -20,7 +20,7 @@
           "ignoreFailures": true
         }
       ],
-      "preLaunchTask": "build"
+      "preLaunchTask": "make" // make 태스크를 실행하도록 수정
     }
   ]
 }
