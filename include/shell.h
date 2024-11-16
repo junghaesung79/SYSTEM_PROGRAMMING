@@ -5,6 +5,7 @@
 #include <dirent.h>
 #include <errno.h>
 #include <libgen.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -22,6 +23,19 @@ char *get_full_path(const char *current_dir, const char *path);
 void check_directory();
 char get_file_type(mode_t mode);
 void mode_to_string(mode_t mode, char *str);
+
+typedef struct {
+    char *command;
+    char current_dir[MAX_CMD_SIZE];
+    char *args[MAX_ARGS];
+    int arg_count;
+    volatile sig_atomic_t running;
+} ShellState;
+
+// 함수 선언
+ShellState *initialize_shell();
+void cleanup_shell(ShellState *shell);
+void sigint_handler(int signo);
 
 // 명령어 함수 선언
 void help_command();

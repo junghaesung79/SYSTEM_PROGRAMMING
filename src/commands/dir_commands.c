@@ -15,7 +15,7 @@ void cd_command(char *path, char *current_dir) {
         strcpy(temp_path, current_dir);
         char *parent = dirname(temp_path);
         snprintf(new_path, sizeof(new_path), "%s", parent);
-    } else if (path[0] != '/') {  // 상대경로 이동, 절대경로보다 사용빈도가 높다고 판단하여 앞에 배치
+    } else if (path[0] != '/') {
         if (strcmp(current_dir, "/") == 0) {
             snprintf(new_path, sizeof(new_path), "/%s", path);
         } else {
