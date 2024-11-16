@@ -12,6 +12,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
+#include <utime.h>
 
 // 상수 정의
 #define MAX_CMD_SIZE (128)
@@ -49,5 +50,6 @@ void rm_command(char *file_to_remove, const char *current_dir);
 void chmod_command(char *permission_str, char *filename, const char *current_dir);
 void cat_command(char *filename, const char *current_dir);
 void cp_command(char *source_file, char *dest_file, const char *current_dir);
+void touch_command(char *filename, const char *current_dir);
 
 #endif

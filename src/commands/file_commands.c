@@ -243,3 +243,40 @@ void ln_command(int argc, char *args[], const char *current_dir) {
     free(full_original_path);
     free(full_new_path);
 }
+
+//
+void touch_command(char *filename, const char *current_dir) {
+    char *full_path = get_full_path(current_dir, filename);
+    if (full_path == NULL) {
+        printf("Error: Invalid path\n");
+        return;
+    }
+
+    // ROOT_PATH 제한 확인
+    if (strncmp(full_path, ROOT_PATH, strlen(ROOT_PATH)) != 0) {
+        printf("Error: Cannot operate outside of %s\n", ROOT_PATH);
+        free(full_path);
+        return;
+    }
+
+    // 파일 열기 (없으면 생성)
+    FILE *fp = fopen(full_path, "a");
+    if (fp == NULL) {
+        perror("touch failed");
+        free(full_path);
+        return;
+    }
+    fclose(fp);
+
+    // 현재 시간으로 타임스탬프 업데이트
+    struct utimbuf new_times;
+    time_t current_time = time(NULL);
+    new_times.actime = current_time;   // 접근 시간
+    new_times.modtime = current_time;  // 수정 시간
+
+    if (utime(full_path, &new_times) == -1) {
+        perror("Failed to update timestamp");
+    }
+
+    free(full_path);
+}

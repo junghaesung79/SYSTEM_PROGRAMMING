@@ -152,6 +152,12 @@ int main(int argc, char **argv) {
             } else {
                 printf("Usage: cp <source_file> <destination_file>\n");
             }
+        } else if (strcmp(shell->args[0], "touch") == 0) {
+            if (shell->arg_count == 2) {
+                touch_command(shell->args[1], shell->current_dir);
+            } else {
+                printf("Usage: touch <filename>\n");
+            }
         } else {
             printf("Fail to run command\n");
         }
