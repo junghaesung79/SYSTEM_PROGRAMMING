@@ -189,3 +189,39 @@ void execute_command(int argc, char *args[], const char *current_dir) {
         }
     }
 }
+
+// 프로세스 종료 함수
+void kill_command(int argc, char *args[]) {
+    if (argc != 2 && argc != 3) {
+        printf("Usage: kill [-signal] pid\n");
+        return;
+    }
+
+    pid_t pid;
+    int signal = SIGTERM;  // 기본 시그널
+
+    if (argc == 3) {
+        // kill -9 1234 형식
+        if (args[1][0] == '-') {
+            signal = atoi(args[1] + 1);
+            pid = atoi(args[2]);
+        } else {
+            printf("Invalid signal format. Use: kill -signal pid\n");
+            return;
+        }
+    } else {
+        // kill 1234 형식
+        pid = atoi(args[1]);
+    }
+
+    if (pid <= 0) {
+        printf("Invalid PID\n");
+        return;
+    }
+
+    if (kill(pid, signal) == -1) {
+        perror("kill failed");
+    } else {
+        printf("Signal %d sent to process %d\n", signal, pid);
+    }
+}

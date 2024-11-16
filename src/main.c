@@ -163,6 +163,8 @@ int main(int argc, char **argv) {
         } else if (shell->args[0][0] == '.' && shell->args[0][1] == '/') {
             // 실행 파일 실행 (./program 형식)
             execute_command(shell->arg_count, shell->args, shell->current_dir);
+        } else if (strcmp(shell->args[0], "kill") == 0) {
+            kill_command(shell->arg_count, shell->args);
         } else {
             printf("Fail to run command\n");
         }

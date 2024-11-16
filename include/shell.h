@@ -56,5 +56,6 @@ void cp_command(char *source_file, char *dest_file, const char *current_dir);
 void touch_command(char *filename, const char *current_dir);
 void ps_command();
 void execute_command(int argc, char *args[], const char *current_dir);
+void kill_command(int argc, char *args[]);
 
 #endif
