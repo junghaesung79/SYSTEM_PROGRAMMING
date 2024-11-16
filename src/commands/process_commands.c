@@ -2,6 +2,124 @@
 
 #include "shell.h"
 
+struct ProcessInfo {
+    pid_t pid;
+    char state;
+    char command[256];
+    char username[32];
+};
+
+// 프로세스 상태를 문자로 변환
+char get_process_state(char *state) {
+    switch (state[0]) {
+        case 'R':
+            return 'R';  // Running
+        case 'S':
+            return 'S';  // Sleeping
+        case 'D':
+            return 'D';  // Disk sleep
+        case 'Z':
+            return 'Z';  // Zombie
+        case 'T':
+            return 'T';  // Stopped
+        default:
+            return '?';
+    }
+}
+
+// 프로세스 정보 읽기
+int read_process_info(pid_t pid, struct ProcessInfo *info) {
+    char path[256];
+    char buffer[1024];
+    FILE *fp;
+
+    // /proc/[pid]/stat 파일 읽기
+    snprintf(path, sizeof(path), "/proc/%d/stat", pid);
+    fp = fopen(path, "r");
+    if (!fp) return 0;
+
+    if (fgets(buffer, sizeof(buffer), fp)) {
+        char comm[256];
+        // 사용하지 않는 변수들 제거
+        sscanf(buffer, "%d %s %c", &info->pid, comm, &info->state);
+
+        // 명령어 이름 정리 (괄호 제거)
+        char *start = strchr(buffer, '(');
+        char *end = strrchr(buffer, ')');
+        if (start && end && end > start) {
+            int len = end - start - 1;
+            strncpy(info->command, start + 1, len);
+            info->command[len] = '\0';
+        }
+    }
+    fclose(fp);
+
+    // 사용자 이름 가져오기
+    snprintf(path, sizeof(path), "/proc/%d/status", pid);
+    fp = fopen(path, "r");
+    if (fp) {
+        while (fgets(buffer, sizeof(buffer), fp)) {
+            if (strncmp(buffer, "Uid:", 4) == 0) {
+                int uid;
+                sscanf(buffer, "Uid: %d", &uid);
+                struct passwd *pw = getpwuid(uid);
+                if (pw) {
+                    strncpy(info->username, pw->pw_name, sizeof(info->username) - 1);
+                    info->username[sizeof(info->username) - 1] = '\0';
+                }
+                break;
+            }
+        }
+        fclose(fp);
+    }
+
+    return 1;
+}
+
+// 프로세스 목록 출력
+void ps_command() {
+    DIR *proc_dir;
+    struct dirent *entry;
+    struct ProcessInfo processes[1024];
+    int process_count = 0;
+
+    // /proc 디렉토리 열기
+    proc_dir = opendir("/proc");
+    if (!proc_dir) {
+        perror("Cannot open /proc");
+        return;
+    }
+
+    // 헤더 출력
+    printf("\n  PID USER     STATE COMMAND\n");
+    printf("------------------------\n");
+
+    // /proc 디렉토리 읽기
+    while ((entry = readdir(proc_dir)) != NULL) {
+        // PID 디렉토리만 처리 (숫자로 된 이름)
+        if (isdigit(entry->d_name[0])) {
+            pid_t pid = atoi(entry->d_name);
+            struct ProcessInfo info;
+
+            if (read_process_info(pid, &info)) {
+                processes[process_count++] = info;
+                if (process_count >= 1024) break;
+            }
+        }
+    }
+    closedir(proc_dir);
+
+    // 프로세스 정보 출력
+    for (int i = 0; i < process_count; i++) {
+        printf("%5d %-8s %c %s\n",
+               processes[i].pid,
+               processes[i].username,
+               processes[i].state,
+               processes[i].command);
+    }
+    printf("\n");
+}
+
 // 프로그램을 실행하는 함수
 void execute_command(int argc, char *args[], const char *current_dir) {
     pid_t pid;

@@ -2,14 +2,17 @@
 #define SHELL_H
 
 // 필요한 헤더 파일들
+#include <ctype.h>
 #include <dirent.h>
 #include <errno.h>
 #include <libgen.h>
+#include <pwd.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 #include <time.h>
 #include <unistd.h>
 #include <utime.h>
@@ -51,6 +54,7 @@ void chmod_command(char *permission_str, char *filename, const char *current_dir
 void cat_command(char *filename, const char *current_dir);
 void cp_command(char *source_file, char *dest_file, const char *current_dir);
 void touch_command(char *filename, const char *current_dir);
+void ps_command();
 void execute_command(int argc, char *args[], const char *current_dir);
 
 #endif
