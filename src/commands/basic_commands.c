@@ -2,19 +2,35 @@
 
 // 구현된 함수 설명하는 함수
 void help_command() {
-    printf("Available commands:\n");
-    printf("  help                  : Show help messages\n");
+    printf("\nAvailable commands:\n");
+    printf("\n[File and Directory Commands]\n");
+    printf("  ls [path]             : List contents of a directory\n");
     printf("  cd <path>             : Change current directory\n");
     printf("  mkdir <path>          : Create a new directory\n");
     printf("  rmdir <path>          : Remove an empty directory\n");
     printf("  rename <old> <new>    : Rename a file or directory\n");
-    printf("  ls [path]             : List contents of a directory\n");
-    printf("  ln [-s] <original> <new> : Create a hard link or symbolic link\n");
     printf("  rm <file>             : Delete a file\n");
-    printf("  chmod <perm> <file>   : Change file permissions\n");
-    printf("  cat <file>            : Display contents of a file\n");
     printf("  cp <source> <dest>    : Copy a file\n");
-    printf("  quit                  : Escape from the shell\n");
+
+    printf("\n[File Permission and Link Commands]\n");
+    printf("  chmod <perm> <file>   : Change file permissions\n");
+    printf("  ln [-s] <orig> <new>  : Create a hard link or symbolic link (-s for symbolic)\n");
+
+    printf("\n[File Content Commands]\n");
+    printf("  cat <file>            : Display contents of a file\n");
+
+    printf("\n[Process Commands]\n");
+    printf("  ps                    : Display process list\n");
+    printf("  kill [-signal] <pid>  : Send signal to process (default: SIGTERM)\n");
+    printf("  ./program [args]      : Execute a program\n");
+    printf("  program [args] &      : Execute a program in background\n");
+
+    printf("\n[Other Commands]\n");
+    printf("  help                  : Show this help message\n");
+    printf("  quit                  : Exit from the shell\n");
+
+    printf("\nNote: All operations are restricted to %s directory\n", ROOT_PATH);
+    printf("\n");
 }
 
 // 파일 또는 디렉토리 이름 변경 함수

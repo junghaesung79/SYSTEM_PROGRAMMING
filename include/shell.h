@@ -27,6 +27,8 @@ char *get_full_path(const char *current_dir, const char *path);
 void check_directory();
 char get_file_type(mode_t mode);
 void mode_to_string(mode_t mode, char *str);
+int contains_parent_dir(const char *path);
+char *normalize_path(const char *path);
 
 typedef struct {
     char *command;

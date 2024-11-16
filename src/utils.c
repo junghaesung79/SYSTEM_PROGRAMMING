@@ -1,9 +1,51 @@
 #include "shell.h"
 
+// 상위 디렉토리 접근 체크 함수 추가
+int contains_parent_dir(const char *path) {
+    char *tmp = strstr(path, "..");
+    while (tmp != NULL) {
+        // ".."가 경로의 컴포넌트인지 확인
+        if ((tmp == path || tmp[-1] == '/') &&
+            (tmp[2] == '\0' || tmp[2] == '/')) {
+            return 1;
+        }
+        tmp = strstr(tmp + 1, "..");
+    }
+    return 0;
+}
+
+// 경로 정규화 함수 추가
+char *normalize_path(const char *path) {
+    char *normalized = malloc(strlen(path) + 1);
+    if (!normalized) return NULL;
+
+    const char *src = path;
+    char *dst = normalized;
+
+    // 연속된 '/' 제거 및 경로 정규화
+    while (*src) {
+        if (*src == '/') {
+            *dst++ = *src++;
+            while (*src == '/') src++;  // 연속된 '/' 건너뛰기
+        } else {
+            *dst++ = *src++;
+        }
+    }
+    *dst = '\0';
+
+    return normalized;
+}
+
 // 전체 경로 생성 함수
 char *get_full_path(const char *current_dir, const char *path) {
+    // 상위 디렉토리 접근 체크
+    if (contains_parent_dir(path)) {
+        printf("Error: Cannot access parent directory\n");
+        return NULL;
+    }
+
     size_t len = strlen(ROOT_PATH) + strlen(current_dir) + strlen(path) + 3;
-    char *full_path = malloc(len);  // 메모리 동적 할당. 이 함수 여러 번 호출 할 때 경로 정확히 붙이기 위함
+    char *full_path = malloc(len);
     if (full_path == NULL) {
         perror("Memory allocation failed");
         return NULL;
@@ -15,15 +57,27 @@ char *get_full_path(const char *current_dir, const char *path) {
     } else {
         // 상대 경로인 경우
         if (strcmp(current_dir, "/") == 0) {
-            // 현재 디렉토리가 루트일 때
             snprintf(full_path, len, "%s/%s", ROOT_PATH, path);
         } else {
-            // 현재 디렉토리가 루트가 아닐 때
             snprintf(full_path, len, "%s%s/%s", ROOT_PATH, current_dir, path);
         }
     }
 
-    return full_path;
+    // 경로 정규화
+    char *normalized = normalize_path(full_path);
+    free(full_path);
+    if (normalized == NULL) {
+        return NULL;
+    }
+
+    // ROOT_PATH 벗어나는지 확인
+    if (strncmp(normalized, ROOT_PATH, strlen(ROOT_PATH)) != 0) {
+        printf("Error: Cannot access outside of root directory\n");
+        free(normalized);
+        return NULL;
+    }
+
+    return normalized;
 }
 
 // /tmp/test 디렉토리가 있는 지 확인하고 생성 함수
