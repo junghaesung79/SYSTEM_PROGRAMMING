@@ -244,7 +244,7 @@ void ln_command(int argc, char *args[], const char *current_dir) {
     free(full_new_path);
 }
 
-//
+// 파일을 생성하거나 타임스탬프를 업데이트하는 함수
 void touch_command(char *filename, const char *current_dir) {
     char *full_path = get_full_path(current_dir, filename);
     if (full_path == NULL) {

@@ -51,5 +51,6 @@ void chmod_command(char *permission_str, char *filename, const char *current_dir
 void cat_command(char *filename, const char *current_dir);
 void cp_command(char *source_file, char *dest_file, const char *current_dir);
 void touch_command(char *filename, const char *current_dir);
+void execute_command(int argc, char *args[], const char *current_dir);
 
 #endif

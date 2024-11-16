@@ -158,6 +158,8 @@ int main(int argc, char **argv) {
             } else {
                 printf("Usage: touch <filename>\n");
             }
+        } else if (shell->args[0][0] == '.' && shell->args[0][1] == '/') {
+            execute_command(shell->arg_count, shell->args, shell->current_dir);
         } else {
             printf("Fail to run command\n");
         }
