@@ -21,6 +21,22 @@
 #define MAX_CMD_SIZE (128)
 #define MAX_ARGS (5)  // command를 포함한 현재 최대 인자 개수(ln)
 #define ROOT_PATH "/tmp/test"
+#define MAX_BG_PROCESSES 32
+
+typedef struct {
+    char *command;
+    char current_dir[MAX_CMD_SIZE];
+    char *args[MAX_ARGS];
+    int arg_count;
+    volatile sig_atomic_t running;
+
+    struct {
+        pid_t pid;
+        char command[MAX_CMD_SIZE];
+        int active;  // 프로세스 활성 상태
+    } bg_processes[MAX_BG_PROCESSES];
+    int bg_process_count;
+} ShellState;
 
 // 유틸리티 함수 선언
 char *get_full_path(const char *current_dir, const char *path);
@@ -29,16 +45,6 @@ char get_file_type(mode_t mode);
 void mode_to_string(mode_t mode, char *str);
 int contains_parent_dir(const char *path);
 char *normalize_path(const char *path);
-
-typedef struct {
-    char *command;
-    char current_dir[MAX_CMD_SIZE];
-    char *args[MAX_ARGS];
-    int arg_count;
-    volatile sig_atomic_t running;
-} ShellState;
-
-// 함수 선언
 ShellState *initialize_shell();
 void cleanup_shell(ShellState *shell);
 void sigint_handler(int signo);
@@ -56,8 +62,8 @@ void chmod_command(char *permission_str, char *filename, const char *current_dir
 void cat_command(char *filename, const char *current_dir);
 void cp_command(char *source_file, char *dest_file, const char *current_dir);
 void touch_command(char *filename, const char *current_dir);
-void ps_command();
-void execute_command(int argc, char *args[], const char *current_dir);
+void ps_command(ShellState *shell);
+void execute_command(int argc, char *args[], const char *current_dir, ShellState *shell);
 void kill_command(int argc, char *args[]);
 
 #endif

@@ -42,11 +42,23 @@ make
   - [x] chroot 기능이 뭐지? (첫 과제에서 이야기한 chroot 기능 구현 (chroot함수 사용 금지, 기 공유된 코드 참고))
 - [x] 내가 넣고 싶은 기능
   - [x] touch
-  - [ ] 위 화살표 누르면 이전 명령어 보이는 기능
 
 - [ ] 각 기능에 대해서
   - [ ] 동작 여부를 확인 설명
   - [ ] 기능별 실행 결과 캡쳐
   - [ ] 캡처 pdf
-    - [ ] help, cd, mkdir, rmdir, ls, rename, ln, rm, chmod, cat, cp, ps, kill, quit
-- [ ] `zip -r 1st_project_2020123456.zip include/ src/ Makefile README.md`
+    - [ ] help
+    - [ ] cd
+    - [ ] mkdir
+    - [ ] rmdir
+    - [ ] ls
+    - [ ] rename
+    - [ ] ln
+    - [ ] rm
+    - [ ] chmod
+    - [ ] cat
+    - [ ] cp
+    - [ ] ps
+    - [ ] kill
+    - [ ] quit
+- [ ] `zip -r 1st_project_2020120123.zip include/ src/ Makefile README.md`

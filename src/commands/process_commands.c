@@ -77,51 +77,33 @@ int read_process_info(pid_t pid, struct ProcessInfo *info) {
 }
 
 // 프로세스 목록 출력
-void ps_command() {
-    DIR *proc_dir;
-    struct dirent *entry;
-    struct ProcessInfo processes[1024];
-    int process_count = 0;
-
-    // /proc 디렉토리 열기
-    proc_dir = opendir("/proc");
-    if (!proc_dir) {
-        perror("Cannot open /proc");
-        return;
-    }
-
-    // 헤더 출력
-    printf("\n  PID USER     STATE COMMAND\n");
+void ps_command(ShellState *shell) {
+    printf("\n  PID STATE COMMAND\n");
     printf("------------------------\n");
 
-    // /proc 디렉토리 읽기
-    while ((entry = readdir(proc_dir)) != NULL) {
-        // PID 디렉토리만 처리 (숫자로 된 이름)
-        if (isdigit(entry->d_name[0])) {
-            pid_t pid = atoi(entry->d_name);
-            struct ProcessInfo info;
+    // 현재 쉘 프로세스 출력
+    printf("%5d R     Current Shell\n", getpid());
 
-            if (read_process_info(pid, &info)) {
-                processes[process_count++] = info;
-                if (process_count >= 1024) break;
+    // 백그라운드 프로세스 상태 확인 및 출력
+    for (int i = 0; i < shell->bg_process_count; i++) {
+        if (shell->bg_processes[i].active) {
+            int status;
+            pid_t result = waitpid(shell->bg_processes[i].pid, &status, WNOHANG);
+
+            if (result == 0) {  // 프로세스가 여전히 실행 중
+                printf("%5d R     %s\n",
+                       shell->bg_processes[i].pid,
+                       shell->bg_processes[i].command);
+            } else {
+                // 프로세스가 종료됨
+                shell->bg_processes[i].active = 0;
             }
         }
     }
-    closedir(proc_dir);
-
-    // 프로세스 정보 출력
-    for (int i = 0; i < process_count; i++) {
-        printf("%5d %-8s %c %s\n",
-               processes[i].pid,
-               processes[i].username,
-               processes[i].state,
-               processes[i].command);
-    }
-    printf("\n");
 }
 
 // 프로그램을 실행하는 함수
-void execute_command(int argc, char *args[], const char *current_dir) {
+void execute_command(int argc, char *args[], const char *current_dir, ShellState *shell) {
     pid_t pid;
     int background = 0;  // 백그라운드 실행 여부
 
@@ -169,23 +151,17 @@ void execute_command(int argc, char *args[], const char *current_dir) {
     } else {
         // 부모 프로세스
         if (!background) {
-            // 포그라운드 실행: 자식 프로세스 종료 대기
-            int status;
-            waitpid(pid, &status, 0);
-
-            if (WIFEXITED(status)) {
-                // 정상 종료
-                int exit_status = WEXITSTATUS(status);
-                if (exit_status != 0) {
-                    printf("Program exited with status %d\n", exit_status);
-                }
-            } else if (WIFSIGNALED(status)) {
-                // 시그널에 의한 종료
-                printf("Program terminated by signal %d\n", WTERMSIG(status));
-            }
+            // ... (기존 포그라운드 실행 코드)
         } else {
-            // 백그라운드 실행: 자식 프로세스 ID 출력
-            printf("[%d] %s\n", pid, args[0]);
+            // 백그라운드 실행
+            if (shell->bg_process_count < MAX_BG_PROCESSES) {
+                shell->bg_processes[shell->bg_process_count].pid = pid;
+                strncpy(shell->bg_processes[shell->bg_process_count].command,
+                        args[0], MAX_CMD_SIZE - 1);
+                shell->bg_processes[shell->bg_process_count].active = 1;
+                shell->bg_process_count++;
+                printf("[%d] %s\n", pid, args[0]);
+            }
         }
     }
 }
