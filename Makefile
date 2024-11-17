@@ -9,6 +9,7 @@ TEST_SRCS = $(wildcard test/*.c)
 TEST_BINS = $(TEST_SRCS:.c=)
 
 all: $(TARGET) test_programs install
+	./$(TARGET)
 
 $(TARGET): $(OBJS)
 	$(CC) -o $@ $^
