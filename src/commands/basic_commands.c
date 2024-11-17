@@ -33,6 +33,11 @@ void help_command() {
     printf("\n");
 }
 
+// 화면을 지우는 함수
+void clear_command() {
+    printf("\033[H\033[J");
+}
+
 // 파일 또는 디렉토리 이름 변경 함수
 void rename_command(char *source, char *target, const char *current_dir) {
     char *full_source = get_full_path(current_dir, source);

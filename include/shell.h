@@ -51,6 +51,7 @@ void sigint_handler(int signo);
 
 // 명령어 함수 선언
 void help_command();
+void clear_command();
 void cd_command(char *path, char *current_dir);
 void mkdir_command(char *path, const char *current_dir);
 void rmdir_command(char *path, const char *current_dir);

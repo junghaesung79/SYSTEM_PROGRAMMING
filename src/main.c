@@ -7,9 +7,23 @@ int main(int argc, char **argv) {
     while (shell->running) {
         printf("%s $ ", shell->current_dir);
 
+        static int eof_count = 0;
+
+        // 컨트롤 + D 두 번 연속 입력 시 종료
         if (fgets(shell->command, MAX_CMD_SIZE - 1, stdin) == NULL) {
+            if (feof(stdin)) {
+                eof_count++;
+                if (eof_count >= 2) {
+                    printf("\nlogout\n");
+                    break;
+                }
+                printf("\nPress Ctrl+D again to exit.\n");
+                clearerr(stdin);
+                continue;
+            }
             continue;
         }
+        eof_count = 0;
 
         char *tok_str = strtok(shell->command, " \n");
         if (tok_str == NULL) continue;
@@ -28,6 +42,8 @@ int main(int argc, char **argv) {
         // 명령어 처리 로직
         if (strcmp(shell->args[0], "help") == 0) {
             help_command();
+        } else if (strcmp(shell->args[0], "clear") == 0) {
+            clear_command();
         } else if (strcmp(shell->args[0], "cd") == 0) {
             if (shell->arg_count > 1) {
                 cd_command(shell->args[1], shell->current_dir);
