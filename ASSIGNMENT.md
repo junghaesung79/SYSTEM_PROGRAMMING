@@ -26,31 +26,22 @@
 - [x] 기능들 리팩토링
   - [x] 지금 있는 기능들 파악
   - [x] 새로운 기능 만들 때 어떤 식으로 명령어 파싱, 분기되는 지 파악
-- [ ] 새로 만들 기능들
+- [x] 새로 만들 기능들
   - [x] Ctrl+C 입력 방지 구현
   - [x] 프로그램 실행
   - [x] 프로세스 목록 ps 명령어
   - [x] kill 명령어
-  - [x] chroot 기능이 뭐지? (첫 과제에서 이야기한 chroot 기능 구현 (chroot함수 사용 금지, 기 공유된 코드 참고))
+  - [x] chroot 기능. 이미 됨
 - [x] 내가 넣고 싶은 기능
   - [x] touch
+  - [x] clear
+  - [ ] ~~화살표 위 키로 이전 명령어 불러오기 => 의존성이 필요한 것으로 조사. 적용x~~
+- [x] 문제 해결
+  - [x] Ctrl+D로 종료되는 문제. Ctrl+D 두 번으로 종료되도록 변경
+  - [x] 프로세스 접근 제한에 따른 문제. 프로세스를 실행할 때 그것을 기록해서 ps에서 보여주도록 수정
 
-- [ ] 각 기능에 대해서
+- [x] 각 기능에 대해서
   - [x] 동작 여부를 확인 설명
-  - [ ] 기능별 실행 결과 캡쳐
-  - [ ] 캡처 pdf
-    - [ ] help
-    - [ ] cd
-    - [ ] mkdir
-    - [ ] rmdir
-    - [ ] ls
-    - [ ] rename
-    - [ ] ln
-    - [ ] rm
-    - [ ] chmod
-    - [ ] cat
-    - [ ] cp
-    - [ ] ps
-    - [ ] kill
-    - [ ] quit
-- [ ] `zip -r 1st_project_2020120123.zip include/ src/ Makefile README.md`
+  - [x] 기능별 실행 결과 캡쳐
+  - [x] 설명, 캡처 pdf화
+- [ ] `zip -r 1st_project_2020120123.zip include/ src/ test/ Makefile README.md ASSIGNMENT.md` 빌드
