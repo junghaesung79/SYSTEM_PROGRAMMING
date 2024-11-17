@@ -8,11 +8,7 @@ int main(int argc, char **argv) {
         printf("%s $ ", shell->current_dir);
 
         if (fgets(shell->command, MAX_CMD_SIZE - 1, stdin) == NULL) {
-            if (errno == EINTR) {
-                // 시그널에 의해 중단된 경우
-                continue;
-            }
-            break;
+            continue;
         }
 
         char *tok_str = strtok(shell->command, " \n");
