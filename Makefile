@@ -1,4 +1,4 @@
-CC = clang
+CC = gcc
 CFLAGS = -Wall -I./include
 TARGET = myshell
 SRCS = $(wildcard src/*.c) $(wildcard src/commands/*.c)
